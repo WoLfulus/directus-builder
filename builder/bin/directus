@@ -13,7 +13,7 @@ cmd_help() {
     local program=$(basename $0)
     echo "Usage: $program <command> [options]\n"
     echo "Commands:"
-    echo ""
+    echo "  TODO: list commands"
 }
 
 directus_cli cmd_ $@

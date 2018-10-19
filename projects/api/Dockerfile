@@ -43,4 +43,4 @@ RUN a2enmod rewrite
 COPY --chown=www-data:www-data --from=builder /directus/tmp/api/ /var/www/html/
 
 # Copy configuration file
-# COPY --chown=www-data:www-data api.php /var/www/html/config/api.php
+COPY --chown=www-data:www-data api.php /var/www/html/config/api.php
