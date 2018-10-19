@@ -32,7 +32,7 @@ services:
   #
   api:
     hostname: "api"
-    image: wolfulus/directus-api:7.0.1
+    image: wolfulus/directus-api:latest
     environment:
       DATABASE_HOST: "mysql"
       DATABASE_NAME: "directus"
@@ -50,7 +50,7 @@ services:
   #
   app:
     hostname: "app"
-    image: wolfulus/directus-app:7.0.1
+    image: wolfulus/directus-app:latest
     environment:
       API_ENDPOINT: "API; http://api.localtest.me/_/"
     labels:
