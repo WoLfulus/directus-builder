@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#
+# Builds the fetched contents
+# 
+cmd_build() {
+
+    if [ ! -d "$DIRECTUS_TMP/api/" ]; then
+        echo "Missing 'api' release. You should fetch it first using:"
+        echo "\$ directus fetch api <version>"
+        exit 1
+    fi
+
+    if [ ! -d "$DIRECTUS_TMP/app/" ]; then
+        echo "Missing 'app' release. You should fetch it first using:"
+        echo "Use: directus fetch app <version>"
+        exit 1
+    fi
+
+    echo "Building..."
+
+}

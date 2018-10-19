@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#
+# Fetches API repository release
+# 
+cmd_fetch_api() {
+    local version="$1"
+    if [ -z "$version" ]; then
+        echo "Missing release version"
+        exit 1
+    fi
+    directus_download api $version $DIRECTUS_TMP/api/
+}
+
+#
+# Fetches APP repository release
+# 
+cmd_fetch_app() {
+    local version="$1"
+    if [ -z "$version" ]; then
+        echo "Missing release version"
+        exit 1
+    fi
+    directus_download app $version $DIRECTUS_TMP/app/
+}
+
+#
+# Fetch command CLI
+#
+cmd_fetch() {
+    directus_cli cmd_fetch_ $@
+}

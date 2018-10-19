@@ -1,0 +1,19 @@
+#!/bin/bash
+
+export DIRECTUS_BIN=/directus/bin
+export DIRECTUS_TMP=/directus/tmp
+export DIRECTUS_DIST=/directus/dist
+
+source $DIRECTUS_BIN/lib/cli
+source $DIRECTUS_BIN/lib/download
+source $DIRECTUS_BIN/commands/build
+source $DIRECTUS_BIN/commands/fetch
+
+cmd_help() {
+    local program=$(basename $0)
+    echo "Usage: $program <command> [options]\n"
+    echo "Commands:"
+    echo ""
+}
+
+directus_cli cmd_ $@

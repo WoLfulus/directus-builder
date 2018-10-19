@@ -1,0 +1,55 @@
+#!/bin/bash
+
+#
+# Downloads and Extract GitHub Releases into a local folder.
+#
+directus_download() {
+
+    local repository="$1"
+    if [ -z "$repository" ]; then
+        echo "Missing repository name"
+        exit 1
+    fi
+
+    local version="$2"
+    if [ -z "$version" ]; then
+        echo "Missing release version"
+        exit 1
+    fi
+
+    local location="$3"
+    if [ -z "$location" ]; then
+        echo "Missing target location"
+        exit 1
+    fi
+
+    echo "Fetching '${repository}'..."
+
+    local url="https://github.com/directus/${repository}/archive/v${version}.tar.gz"
+
+    local download_dir="/tmp/directus/${repository}"
+    local download_file="${download_dir}/release.tar.gz"
+
+    # Folders
+    echo "> Creating directories..."
+    mkdir -p "${location}"
+    mkdir -p "${download_dir}"
+
+    # Download
+    echo "> Downloading release..."
+    curl -sS -o "${download_file}" -L $url
+
+    # Extract and delete
+    echo "> Extracting release files..."
+    tar -xzf "${download_file}" -C "${download_dir}"
+    rm -rf "${download_file}"
+
+    # Move
+    echo "> Copying to target folder..."
+    rsync -a "${download_dir}/${repository}-${version}/" "${location}/"
+    rm -rf "${download_dir}"
+
+    # Finish
+    echo "> Finished."
+
+}

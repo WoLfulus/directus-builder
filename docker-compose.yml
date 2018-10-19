@@ -1,0 +1,61 @@
+version: "3"
+services:
+
+  #
+  # Gateway
+  #
+  gateway:
+    hostname: "gateway"
+    image: wolfulus/traefik-docker
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+
+  #
+  # MySQL
+  #
+  mysql:
+    hostname: "mysql"
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+      MYSQL_DATABASE: "directus"
+    restart: always
+    ports:
+      - "3306:3306"
+
+  #
+  # API
+  #
+  api:
+    hostname: "api"
+    image: wolfulus/directus-api:7.0.1
+    environment:
+      DATABASE_HOST: "mysql"
+      DATABASE_NAME: "directus"
+      DATABASE_USERNAME: "root"
+      DATABASE_PASSWORD: "root"
+    labels:
+      traefik.enable: "true"
+      traefik.port: "80"
+      traefik.backend: "api"
+      traefik.frontend.rule: "Host:api.localtest.me"
+    tty: true
+
+  #
+  # App
+  #
+  app:
+    hostname: "app"
+    image: wolfulus/directus-app:7.0.1
+    environment:
+      API_ENDPOINT: "API; http://api.localtest.me/_/"
+    labels:
+      traefik.enable: "true"
+      traefik.port: "80"
+      traefik.backend: "app"
+      traefik.frontend.rule: "Host:app.localtest.me"
+    tty: true

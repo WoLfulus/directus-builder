@@ -1,0 +1,33 @@
+#!/bin/bash
+
+#
+# CLI interface
+#
+directus_cli() {
+    local PREFIX=$1
+    local COMMAND=$2
+    local LAST="${@: -1}"
+    shift
+    case $COMMAND in
+        "" | "-h" | "--help")
+            ${PREFIX}help
+            ;;
+
+        *)
+            shift
+            case $LAST in
+                "" | "-h" | "--help")
+                    ${PREFIX}${COMMAND}_help
+                    ;;
+                *)
+
+                ${PREFIX}${COMMAND} $@
+                if [ $? = 127 ]; then
+                    echo "Error: '$COMMAND' is not a known command." >&2
+                    echo "       Run '$ProgName --help' for a list of known commands." >&2
+                    exit 1
+                fi
+                ;;
+            esac
+    esac
+}
