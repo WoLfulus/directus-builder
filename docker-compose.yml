@@ -26,16 +26,36 @@ services:
     restart: always
     ports:
       - "3306:3306"
+    logging:
+      driver: none
+
+  #
+  # Builder
+  #
+  builder:
+    hostname: "builder"
+    image: wolfulus/directus-builder:local
+    build:
+      context: ./builder/
+    command: "true"
+    tty: true
 
   #
   # API
   #
   api:
     hostname: "api"
-    image: wolfulus/directus-api:latest
+    image: wolfulus/directus-api:local
+    build:
+      context: ./projects/api/
+      args:
+        BUILDER_IMAGE: "wolfulus/directus-builder:local"
+        API_VERSION: "2.0.2"
+    depends_on:
+      - builder
     environment:
       DATABASE_HOST: "mysql"
-      DATABASE_NAME: "directus"
+      DATABASE_NAME: "directus2"
       DATABASE_USERNAME: "root"
       DATABASE_PASSWORD: "root"
     labels:
@@ -50,7 +70,14 @@ services:
   #
   app:
     hostname: "app"
-    image: wolfulus/directus-app:latest
+    image: wolfulus/directus-app:local
+    build:
+      context: ./projects/app/
+      args:
+        BUILDER_IMAGE: "wolfulus/directus-builder:local"
+        APP_VERSION: "7.0.2"
+    depends_on:
+      - builder
     environment:
       API_ENDPOINT: "API; http://api.localtest.me/_/"
     labels:

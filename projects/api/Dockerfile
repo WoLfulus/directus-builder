@@ -2,14 +2,9 @@
 # Project
 #
 
-ARG BUILDER_IMAGE=wolfulus/directus-builder:latest
-ARG API_VERSION=2.0.1
-
+ARG BUILDER_IMAGE
 FROM ${BUILDER_IMAGE} AS builder
-
-ENV BUILDER_IMAGE ${BUILDER_IMAGE:-wolfulus/directus-builder:latest}
-ENV API_VERSION ${API_VERSION:-2.0.1}
-
+ARG API_VERSION
 RUN directus fetch api ${API_VERSION}
 
 #
@@ -44,3 +39,10 @@ COPY --chown=www-data:www-data --from=builder /directus/tmp/api/ /var/www/html/
 
 # Copy configuration file
 COPY --chown=www-data:www-data api.php /var/www/html/config/api.php
+
+# Copy files
+COPY bootstrap.php /root/bootstrap.php
+COPY entrypoint.sh /root/entrypoint.sh
+RUN chmod +x /root/entrypoint.sh
+
+ENTRYPOINT ["/root/entrypoint.sh"]

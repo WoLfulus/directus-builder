@@ -36,8 +36,12 @@ directus_download() {
     mkdir -p "${download_dir}"
 
     # Download
-    echo "> Downloading release..."
-    curl -sS -o "${download_file}" -L $url
+    echo "> Downloading release '${version}'..."
+    curl --fail -sS -o "${download_file}" -L $url
+    if [ "$?" != "0" ]; then
+        echo "> Failed to download release"
+        exit 1
+    fi
 
     # Extract and delete
     echo "> Extracting release files..."

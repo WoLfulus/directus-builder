@@ -2,14 +2,9 @@
 # Project
 #
 
-ARG BUILDER_IMAGE=wolfulus/directus-builder:latest
-ARG APP_VERSION=7.0.1
-
+ARG BUILDER_IMAGE
 FROM ${BUILDER_IMAGE} AS builder
-
-ENV BUILDER_IMAGE ${BUILDER_IMAGE:-wolfulus/directus-builder:latest}
-ENV APP_VERSION ${APP_VERSION:-7.0.1}
-
+ARG APP_VERSION
 RUN directus fetch app ${APP_VERSION}
 
 #
