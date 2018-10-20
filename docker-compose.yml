@@ -55,7 +55,7 @@ services:
       - builder
     environment:
       DATABASE_HOST: "mysql"
-      DATABASE_NAME: "directus2"
+      DATABASE_NAME: "directus"
       DATABASE_USERNAME: "root"
       DATABASE_PASSWORD: "root"
     labels:
